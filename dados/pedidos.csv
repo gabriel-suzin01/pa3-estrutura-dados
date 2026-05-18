@@ -1,0 +1,2 @@
+id_pedido,data,mesa,id_produto,id_tipo_produto,qtd,valor_unitario,valor_total,status_pedido
+1,11/05/2026,1,1,1,20,10.00,200.00,F
