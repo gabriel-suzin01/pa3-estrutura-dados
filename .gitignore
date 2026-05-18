@@ -1,22 +1,13 @@
-# Ambiente Virtual
 .venv/
 venv/
 ENV/
-
-# Configurações do VS Code e Editores
 .vscode/
 *.code-workspace
 .idea/
-
-# Arquivos de Configuração Local / Variáveis de Ambiente
 .env
 .env.local
-
-# Arquivos e Imagens Temporárias do Projeto
 *.pic
-dados/               # Opcional: Ative se não quiser enviar seus arquivos .csv de teste para o GitHub
-
-# Caches do Python (Muito importante para não sujar o Git)
+dados/
 __pycache__/
 *.pyc
 *.pyo
