@@ -15,12 +15,12 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE_DIR)
 
-from lib import interface  as ui
-from lib import arquivos   as arq
-from lib.produtos    import abrir_menu_produto
-from lib.pedidos     import abrir_lancamento_pedido
-from lib.fechamento  import abrir_fechamento_mesa
-from lib.relatorios  import abrir_menu_relatorios
+from lib import interface as ui
+from lib import arquivos as arq
+from lib.produtos import abrir_menu_produto
+from lib.pedidos import abrir_lancamento_pedido
+from lib.fechamento import abrir_fechamento_mesa
+from lib.relatorios import abrir_menu_relatorios
 
 
 def abrir_menu_pedidos(janela_pai: tk.Tk):
@@ -33,9 +33,9 @@ def abrir_menu_pedidos(janela_pai: tk.Tk):
     frame.pack_configure(anchor="center")
 
     opcoes = [
-        ("1  -  Lançar Pedido",            lambda: abrir_lancamento_pedido(win)),
-        ("2  -  Fechamento de Mesa",        lambda: abrir_fechamento_mesa(win)),
-        ("3  -  Voltar ao Menu Principal",  win.destroy),
+        ("1  -  Lançar Pedido", lambda: abrir_lancamento_pedido(win)),
+        ("2  -  Fechamento de Mesa", lambda: abrir_fechamento_mesa(win)),
+        ("3  -  Voltar ao Menu Principal", win.destroy),
     ]
     for texto, cmd in opcoes:
         ui.botao_menu(frame, texto, cmd).pack(pady=5)
@@ -46,15 +46,17 @@ def iniciar_sistema():
     arq.inicializar_arquivos()
 
     janela = tk.Tk()
-    ui.configurar_janela(janela, "Sistema de Pedidos — UNIARP", 560, 440)
+    ui.configurar_janela(janela, "Sistema de Pedidos - Choperia", 560, 440)
 
     # ── Cabeçalho principal ──
-    ui.frame_cabecalho(janela, "⬛  SISTEMA DE PEDIDOS  —  UNIARP")
+    ui.frame_cabecalho(janela, "⬛  SISTEMA DE PEDIDOS  —  CHOPERIA")
 
     tk.Label(
         janela,
         text="Estrutura de Dados  |  3ª Fase / 2026  |  Prof. Emanuel Tonis Florz",
-        font=ui.FONTE_PEQUENA, bg=ui.COR_FUNDO, fg=ui.COR_BORDA
+        font=ui.FONTE_PEQUENA,
+        bg=ui.COR_FUNDO,
+        fg=ui.COR_BORDA,
     ).pack(pady=(4, 0))
 
     ui.separador(janela)
@@ -63,14 +65,19 @@ def iniciar_sistema():
     frame = ui.frame_conteudo(janela)
     frame.pack_configure(anchor="center")
 
-    tk.Label(frame, text="MENU PRINCIPAL", font=ui.FONTE_TITULO,
-             bg=ui.COR_FUNDO, fg=ui.COR_DESTAQUE).pack(pady=(0, 14))
+    tk.Label(
+        frame,
+        text="MENU PRINCIPAL",
+        font=ui.FONTE_TITULO,
+        bg=ui.COR_FUNDO,
+        fg=ui.COR_DESTAQUE,
+    ).pack(pady=(0, 14))
 
     opcoes = [
-        ("1  -  Produto",     lambda: abrir_menu_produto(janela)),
-        ("2  -  Pedidos",     lambda: abrir_menu_pedidos(janela)),
-        ("3  -  Relatórios",  lambda: abrir_menu_relatorios(janela)),
-        ("4  -  Sair",        janela.destroy),
+        ("1  -  Produto", lambda: abrir_menu_produto(janela)),
+        ("2  -  Pedidos", lambda: abrir_menu_pedidos(janela)),
+        ("3  -  Relatórios", lambda: abrir_menu_relatorios(janela)),
+        ("4  -  Sair", janela.destroy),
     ]
     for texto, cmd in opcoes:
         ui.botao_menu(frame, texto, cmd, largura=34).pack(pady=6)
@@ -78,8 +85,11 @@ def iniciar_sistema():
     ui.separador(janela)
 
     tk.Label(
-        janela, text="© 2026 UNIARP — Caçador, SC",
-        font=ui.FONTE_PEQUENA, bg=ui.COR_FUNDO, fg=ui.COR_BORDA
+        janela,
+        text="© 2026 UNIARP — Caçador, SC",
+        font=ui.FONTE_PEQUENA,
+        bg=ui.COR_FUNDO,
+        fg=ui.COR_BORDA,
     ).pack(pady=4)
 
     janela.mainloop()
