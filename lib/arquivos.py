@@ -5,15 +5,24 @@
 import csv
 import os
 
-_BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dados")
+_BASE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dados"
+)
 
 ARQUIVO_PRODUTOS = os.path.join(_BASE, "produtos.csv")
-ARQUIVO_PEDIDOS  = os.path.join(_BASE, "pedidos.csv")
+ARQUIVO_PEDIDOS = os.path.join(_BASE, "pedidos.csv")
 
 CABECALHO_PRODUTOS = ["id_produto", "id_tipo_produto", "descricao", "valor"]
-CABECALHO_PEDIDOS  = [
-    "id_pedido", "data", "mesa", "id_produto", "id_tipo_produto",
-    "qtd", "valor_unitario", "valor_total", "status_pedido"
+CABECALHO_PEDIDOS = [
+    "id_pedido",
+    "data",
+    "mesa",
+    "id_produto",
+    "id_tipo_produto",
+    "qtd",
+    "valor_unitario",
+    "valor_total",
+    "status_pedido",
 ]
 
 
@@ -26,7 +35,7 @@ def inicializar_arquivos():
     _garantir_pasta()
     for caminho, cabecalho in [
         (ARQUIVO_PRODUTOS, CABECALHO_PRODUTOS),
-        (ARQUIVO_PEDIDOS,  CABECALHO_PEDIDOS),
+        (ARQUIVO_PEDIDOS, CABECALHO_PEDIDOS),
     ]:
         if not os.path.exists(caminho):
             with open(caminho, "w", newline="", encoding="utf-8") as f:
@@ -35,6 +44,7 @@ def inicializar_arquivos():
 
 
 # ---------- PRODUTOS ----------
+
 
 def ler_produtos():
     """Retorna todos os produtos cadastrados."""
@@ -53,8 +63,7 @@ def gravar_produto(produto):
 
 def produto_existe(id_produto):
     """Verifica se ja existe um produto com esse id."""
-    return any(p["id_produto"] == str(id_produto).strip()
-               for p in ler_produtos())
+    return any(p["id_produto"] == str(id_produto).strip() for p in ler_produtos())
 
 
 def buscar_produto_por_id(id_produto):
@@ -66,6 +75,7 @@ def buscar_produto_por_id(id_produto):
 
 
 # ---------- PEDIDOS ----------
+
 
 def ler_pedidos():
     """Retorna todos os pedidos."""
@@ -90,10 +100,20 @@ def proximo_id_pedido():
     return max(int(p["id_pedido"]) for p in pedidos) + 1
 
 
-def pedidos_abertos_por_mesa(mesa):
-    """Retorna pedidos com status 'A' da mesa informada."""
-    return [p for p in ler_pedidos()
-            if p["mesa"] == str(mesa).strip() and p["status_pedido"] == "A"]
+def pedidos_abertos_por_mesa(mesa: str | None):
+    """
+    Retorna pedidos com status 'A'.
+    Se a mesa for informada, pega todos os pedidos em aberto da mesa informada.
+    """
+
+    if not mesa:
+        return [p for p in ler_pedidos() if p.get("status_pedido") == "A"]
+    else:
+        return [
+            p
+            for p in ler_pedidos()
+            if p.get("mesa") == str(mesa).strip() and p.get("status_pedido") == "A"
+        ]
 
 
 def fechar_mesa(mesa):
