@@ -49,7 +49,7 @@ def iniciar_sistema():
     ui.configurar_janela(janela, "Sistema de Pedidos - Choperia", 560, 440)
 
     # ── Cabeçalho principal ──
-    ui.frame_cabecalho(janela, "⬛  SISTEMA DE PEDIDOS  —  CHOPERIA")
+    ui.frame_cabecalho(janela, "⬛  SISTEMA DE PEDIDOS  —  BODEGA")
 
     tk.Label(
         janela,
