@@ -9,13 +9,13 @@ from lib import validacoes as val
 from lib import arquivos as arq
 
 
-def abrir_fechamento_mesa(janela_pai: tk.Widget):
+def abrir_fechamento_mesa(container: tk.Frame):
     """Abre a tela de fechamento de mesa."""
-    win = tk.Toplevel(janela_pai)
-    ui.configurar_janela(win, "Fechamento de Mesa", 600, 480)
-    ui.frame_cabecalho(win, "⬛  FECHAMENTO DE MESA")
+    ui.limpar_container(container)
 
-    frame = ui.frame_conteudo(win)
+    ui.frame_cabecalho(container, "⬛  FECHAMENTO DE MESA")
+
+    frame = ui.frame_conteudo(container)
 
     # ── Entrada da mesa ──
     fr_topo = tk.Frame(frame, bg=ui.COR_FUNDO)
@@ -72,9 +72,11 @@ def abrir_fechamento_mesa(janela_pai: tk.Widget):
     btn_fechar.pack(side="left", padx=6)
     btn_fechar.config(state="disabled")
 
-    ui.botao_acao(fr_btn, "✖  Sair", win.destroy, cor="#45475a").pack(
-        side="left", padx=6
-    )
+    from sistema import renderizar_menu_principal
+
+    ui.botao_acao(
+        fr_btn, "✖  Sair", lambda: renderizar_menu_principal(container), cor="#45475a"
+    ).pack(side="left", padx=6)
 
     # Chama pela primeira vez para renderizar pedidos
     buscar()

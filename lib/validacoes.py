@@ -72,9 +72,9 @@ def validar_periodo(data_ini, data_fim):
 def data_no_periodo(data_pedido, data_ini, data_fim):
     """Retorna True se data_pedido estiver dentro do periodo [ini, fim]."""
     try:
-        dp  = datetime.strptime(str(data_pedido).strip(), "%d/%m/%Y")
-        ini = datetime.strptime(str(data_ini).strip(),    "%d/%m/%Y")
-        fim = datetime.strptime(str(data_fim).strip(),    "%d/%m/%Y")
+        dp = datetime.strptime(str(data_pedido).strip(), "%d/%m/%Y")
+        ini = datetime.strptime(str(data_ini).strip(), "%d/%m/%Y")
+        fim = datetime.strptime(str(data_fim).strip(), "%d/%m/%Y")
         return ini <= dp <= fim
     except ValueError:
         return False
