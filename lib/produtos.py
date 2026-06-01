@@ -1,26 +1,14 @@
-# ============================================================
-# produtos.py - Módulo de Produtos (Cadastro e Listagem)
-# ============================================================
-
 import tkinter as tk
 from tkinter import ttk
-
 from lib import interface as ui
 from lib import validacoes as val
 from lib import arquivos as arq
-
 
 def abrir_menu_produto(container: tk.Frame):
     """Abre a janela do submenu Produto."""
     ui.limpar_container(container)
 
-    tk.Label(
-        container,
-        text="SUBMENU: PRODUTOS",
-        font=ui.FONTE_TITULO,
-        bg=ui.COR_FUNDO,
-        fg=ui.COR_TITULO,
-    ).pack(pady=(0, 14))
+    tk.Label(container, text="SUBMENU: PRODUTOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO).pack(pady=(0, 14))
 
     frame = ui.frame_conteudo(container)
     frame.pack_configure(anchor="center")
@@ -28,22 +16,14 @@ def abrir_menu_produto(container: tk.Frame):
     from sistema import renderizar_menu_principal
 
     opcoes = [
-        ("1  -  Cadastro de Produto", lambda: _abrir_cadastro(container)),
-        ("2  -  Listagem de Produto", lambda: _abrir_listagem(container)),
-        (
-            "3  -  Voltar ao Menu Principal",
-            lambda: renderizar_menu_principal(container),
-        ),
-    ]
+        ("1 - Cadastro de Produto", lambda: _abrir_cadastro(container)),
+        ("2 - Listagem de Produto", lambda: _abrir_listagem(container)),
+        ("3 - Voltar ao Menu Principal", lambda: renderizar_menu_principal(container))]
     for texto, cmd in opcoes:
         btn = ui.botao_menu(frame, texto, cmd)
         btn.pack(pady=5)
 
-
-# ──────────────────────────────────────────────────────────
-#  CADASTRO
-# ──────────────────────────────────────────────────────────
-
+#  --------------------CADASTRO----------------------------
 
 def _abrir_cadastro(container: tk.Frame):
     ui.limpar_container(container)
@@ -52,12 +32,7 @@ def _abrir_cadastro(container: tk.Frame):
     frame = ui.frame_conteudo(container)
 
     campos = {}
-    rotulos = [
-        ("id", "ID do Produto:"),
-        ("tipo", "Tipo  [ 1-Bebida / 2-Lanche ]:"),
-        ("desc", "Descrição:"),
-        ("valor", "Valor Unitário (R$):"),
-    ]
+    rotulos = [("id", "ID do Produto:"), ("tipo", "Tipo  [ 1-Bebida / 2-Lanche ]:"), ("desc", "Descrição:"), ("valor", "Valor Unitário (R$):")]
 
     for chave, rotulo in rotulos:
         ui.label_campo(frame, rotulo).pack(anchor="w", pady=(6, 0))
@@ -98,12 +73,7 @@ def _abrir_cadastro(container: tk.Frame):
             ui.mensagem_erro(msg)
             return
 
-        produto = {
-            "id_produto": id_p,
-            "id_tipo_produto": tipo,
-            "descricao": desc,
-            "valor": f"{float(valor):.2f}",
-        }
+        produto = {"id_produto": id_p, "id_tipo_produto": tipo, "descricao": desc, "valor": f"{float(valor):.2f}"}
         arq.gravar_produto(produto)
         ui.mensagem_sucesso(f"Produto '{desc}' cadastrado com sucesso!")
 
@@ -117,15 +87,9 @@ def _abrir_cadastro(container: tk.Frame):
 
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(
-        fr_btn, "✖  Fechar", lambda: renderizar_menu_principal(container), cor="#45475a"
-    ).pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "✖  Fechar", lambda: renderizar_menu_principal(container), cor="#45475a").pack(side="left", padx=6)
 
-
-# ──────────────────────────────────────────────────────────
-#  LISTAGEM
-# ──────────────────────────────────────────────────────────
-
+#  -----------------------LISTAGEM--------------------------
 
 def _abrir_listagem(container: tk.Frame):
     ui.limpar_container(container)
@@ -133,12 +97,7 @@ def _abrir_listagem(container: tk.Frame):
 
     frame = ui.frame_conteudo(container)
 
-    colunas = [
-        ("id", "ID", 60),
-        ("tipo", "Tipo", 100),
-        ("desc", "Descrição", 280),
-        ("valor", "Valor Unit.", 110),
-    ]
+    colunas = [("id", "ID", 60), ("tipo", "Tipo", 100), ("desc", "Descrição", 280), ("valor", "Valor Unit.", 110)]
     fr_tree = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_tree.pack(fill="both", expand=True)
     tree = ui.criar_treeview(fr_tree, colunas, altura=14)
@@ -150,13 +109,9 @@ def _abrir_listagem(container: tk.Frame):
         for p in produtos:
             tipo_txt = val.tipo_para_texto(p["id_tipo_produto"])
             valor_fmt = f"R$ {float(p['valor']):.2f}".replace(".", ",")
-            tree.insert(
-                "", "end", values=(p["id_produto"], tipo_txt, p["descricao"], valor_fmt)
-            )
+            tree.insert("", "end", values=(p["id_produto"], tipo_txt, p["descricao"], valor_fmt))
 
     ui.separador(frame)
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(
-        frame, "✖  Fechar", lambda: renderizar_menu_principal(container)
-    ).pack()
+    ui.botao_acao(frame, "✖  Fechar", lambda: renderizar_menu_principal(container)).pack()

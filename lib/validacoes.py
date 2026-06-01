@@ -4,7 +4,6 @@
 
 from datetime import datetime
 
-
 def validar_inteiro_positivo(valor, nome_campo="Valor"):
     """Valida se o valor é um inteiro positivo maior que zero."""
     try:
@@ -14,7 +13,6 @@ def validar_inteiro_positivo(valor, nome_campo="Valor"):
         return True, ""
     except ValueError:
         return False, "{} deve ser um número inteiro válido.".format(nome_campo)
-
 
 def validar_float_positivo(valor, nome_campo="Valor"):
     """Valida se o valor é um número decimal positivo."""
@@ -26,7 +24,6 @@ def validar_float_positivo(valor, nome_campo="Valor"):
     except ValueError:
         return False, "{} deve ser um número válido (ex: 12.50).".format(nome_campo)
 
-
 def validar_descricao(texto):
     """Valida que a descrição não está vazia."""
     if not str(texto).strip():
@@ -35,13 +32,11 @@ def validar_descricao(texto):
         return False, "A descricao deve ter ao menos 2 caracteres."
     return True, ""
 
-
 def validar_tipo_produto(tipo):
     """Valida que o tipo de produto é 1 (Bebida) ou 2 (Lanche)."""
     if str(tipo) not in ("1", "2"):
         return False, "Tipo de produto deve ser 1 (Bebida) ou 2 (Lanche)."
     return True, ""
-
 
 def validar_data(data):
     """Valida o formato de data DD/MM/AAAA."""
@@ -51,7 +46,6 @@ def validar_data(data):
         return True, ""
     except ValueError:
         return False, "Data invalida: '{}'. Use o formato DD/MM/AAAA.".format(data)
-
 
 def validar_periodo(data_ini, data_fim):
     """Valida que data inicial nao e maior que data final."""
@@ -68,7 +62,6 @@ def validar_periodo(data_ini, data_fim):
         return False, "A data inicial nao pode ser maior que a data final."
     return True, ""
 
-
 def data_no_periodo(data_pedido, data_ini, data_fim):
     """Retorna True se data_pedido estiver dentro do periodo [ini, fim]."""
     try:
@@ -78,7 +71,6 @@ def data_no_periodo(data_pedido, data_ini, data_fim):
         return ini <= dp <= fim
     except ValueError:
         return False
-
 
 def tipo_para_texto(id_tipo):
     """Converte id_tipo_produto para texto legivel."""

@@ -1,8 +1,3 @@
-# ============================================================
-# interface.py - Módulo de Interface Visual (Tkinter)
-# Responsável por toda a parte visual do sistema
-# ============================================================
-
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -63,17 +58,16 @@ def frame_conteudo(container: tk.Widget) -> tk.Frame:
     frame.pack(fill="both", expand=True, padx=10, pady=10)
     return frame
 
-def botao_menu(
-    container: tk.Widget, texto: str, comando, largura: int = 30) -> tk.Button:
+def botao_menu(container: tk.Widget, texto: str, comando, largura: int = 50) -> tk.Button:
     """Cria um botão de menu estilizado."""
     btn = tk.Button(container, text=texto, font=FONTE_MENU, width=largura, bg=COR_BTN, fg=COR_TEXTO, activebackground=COR_BTN_HOVER, activeforeground=COR_TITULO,
-                    relief="flat", cursor="hand2", command=comando, pady=6)
+        relief="flat", cursor="hand2", command=comando, pady=6)
     btn.bind("<Enter>", lambda e: btn.config(bg=COR_BTN_HOVER))
     btn.bind("<Leave>", lambda e: btn.config(bg=COR_BTN))
     return btn
 
 def botao_acao(
-    container: tk.Widget, texto: str, comando, cor: str = "#45475a", largura: int = 14) -> tk.Button:
+    container: tk.Widget, texto: str, comando, cor: str = "#45475a", largura: int = 25) -> tk.Button:
     """Cria um botão de ação menor (confirmar, cancelar etc.)."""
     btn = tk.Button(container, text=texto, font=FONTE_NORMAL, width=largura, bg=cor, fg=COR_TEXTO, activebackground=COR_BTN_HOVER, activeforeground=COR_TITULO, 
                     relief="flat", cursor="hand2", command=comando, pady=4)

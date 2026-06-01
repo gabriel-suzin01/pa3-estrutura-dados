@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-# ============================================================
-#  sistema.py — Arquivo Principal do Sistema de Pedidos
-#  Universidade Alto Vale do Rio do Peixe — UNIARP
-# ============================================================
-
 import os
 import sys
 import tkinter as tk
@@ -41,7 +35,7 @@ def iniciar_sistema():
     janela = ui.configurar_janela("Sistema de Pedidos — Bodega")
 
     # ── Cabeçalho Principal (Fixo no topo da janela) ──
-    ui.frame_cabecalho(janela, "⬛  SISTEMA DE PEDIDOS  —  BODEGA")
+    ui.frame_cabecalho(janela, "⬛  SISTEMA DE PEDIDOS — BODEGA")
     tk.Label(janela, text="Estrutura de Dados  |  3ª Fase / 2026", font=ui.FONTE_PEQUENA, bg=ui.COR_FUNDO, fg=ui.COR_BORDA).pack(pady=(4, 0))
     ui.separador(janela)
 
