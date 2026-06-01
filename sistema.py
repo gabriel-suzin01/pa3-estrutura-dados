@@ -18,33 +18,22 @@ from lib.pedidos import abrir_menu_pedidos
 from lib.relatorios import abrir_menu_relatorios
 
 # ── TELAS DO SISTEMA (RODAM NO MESMO CONTAINER) ──
-
-
 def renderizar_menu_principal(container: tk.Frame):
     """Limpa o container e renderiza o Menu Principal."""
     ui.limpar_container(container)
 
-    tk.Label(
-        container,
-        text="MENU PRINCIPAL",
-        font=ui.FONTE_TITULO,
-        bg=ui.COR_FUNDO,
-        fg=ui.COR_DESTAQUE,
-    ).pack(pady=(0, 14))
+    tk.Label(container, text="MENU PRINCIPAL", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_DESTAQUE).pack(pady=(0, 14))
 
     opcoes = [
-        ("1  -  Produto", lambda: abrir_menu_produto(container)),
-        ("2  -  Pedidos", lambda: abrir_menu_pedidos(container)),
-        ("3  -  Relatórios", lambda: abrir_menu_relatorios(container)),
-        ("4  -  Sair", container.quit),
-    ]
+        ("1 - Produto", lambda: abrir_menu_produto(container)),
+        ("2 - Pedidos", lambda: abrir_menu_pedidos(container)),
+        ("3 - Relatórios", lambda: abrir_menu_relatorios(container)),
+        ("4 - Sair", container.quit)]
+    
     for texto, cmd in opcoes:
         ui.botao_menu(container, texto, cmd, largura=34).pack(pady=6)
 
-
 # ── INICIALIZAÇÃO DO SISTEMA ──
-
-
 def iniciar_sistema():
     """Inicializa os arquivos e monta a estrutura fixa da janela."""
     arq.inicializar_arquivos()
@@ -53,15 +42,7 @@ def iniciar_sistema():
 
     # ── Cabeçalho Principal (Fixo no topo da janela) ──
     ui.frame_cabecalho(janela, "⬛  SISTEMA DE PEDIDOS  —  BODEGA")
-
-    tk.Label(
-        janela,
-        text="Estrutura de Dados  |  3ª Fase / 2026",
-        font=ui.FONTE_PEQUENA,
-        bg=ui.COR_FUNDO,
-        fg=ui.COR_BORDA,
-    ).pack(pady=(4, 0))
-
+    tk.Label(janela, text="Estrutura de Dados  |  3ª Fase / 2026", font=ui.FONTE_PEQUENA, bg=ui.COR_FUNDO, fg=ui.COR_BORDA).pack(pady=(4, 0))
     ui.separador(janela)
 
     # ── O CONTAINER ÚNICO ──
@@ -72,19 +53,12 @@ def iniciar_sistema():
 
     # ── Rodapé (Fixo na base da janela) ──
     ui.separador(janela)
-    tk.Label(
-        janela,
-        text="© 2026 UNIARP — Caçador, SC",
-        font=ui.FONTE_PEQUENA,
-        bg=ui.COR_FUNDO,
-        fg=ui.COR_BORDA,
-    ).pack(pady=4)
+    tk.Label(janela, text="© 2026 UNIARP — Caçador, SC", font=ui.FONTE_PEQUENA, bg=ui.COR_FUNDO, fg=ui.COR_BORDA).pack(pady=4)
 
     # Inicializa o miolo do sistema passando o container fixo
     renderizar_menu_principal(frame_conteudo_principal)
 
     janela.mainloop()
-
 
 if __name__ == "__main__":
     iniciar_sistema()
