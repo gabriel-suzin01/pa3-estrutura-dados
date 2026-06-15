@@ -9,7 +9,7 @@ def abrir_menu_relatorios(container: tk.Frame):
     """Abre o submenu de Relatórios."""
     ui.limpar_container(container)
 
-    tk.Label(container, text="SUBMENU: RELATÓRIOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO,).pack(pady=(0, 14))
+    tk.Label(container, text="RELATÓRIOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO,).pack(pady=(0, 14))
 
     frame = ui.frame_conteudo(container)
     frame.pack_configure(anchor="center")
@@ -90,15 +90,15 @@ def _relatorio_faturamento_geral(container: tk.Frame):
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(pady=4)
-    ui.botao_acao(fr_btn, "📊  Gerar", gerar, cor="#313244").pack(side="left", padx=6)
-    ui.botao_acao(fr_btn, "✖  Fechar", lambda: renderizar_menu_principal(container), cor="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "📊  Gerar", gerar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "\uf00d Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
 
 #  RELATÓRIO 2 — Faturamento por tipo de produto
 
 def _relatorio_por_tipo(container: tk.Frame):
     ui.limpar_container(container)
 
-    tk.Label(container, text="SUBMENU: RELATÓRIOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO).pack(pady=(0, 14))
+    tk.Label(container, text="RELATÓRIOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO).pack(pady=(0, 14))
 
     frame = ui.frame_conteudo(container)
 
@@ -186,5 +186,5 @@ def _relatorio_por_tipo(container: tk.Frame):
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(pady=4)
-    ui.botao_acao(fr_btn, "📊  Gerar", gerar, cor="#313244").pack(side="left", padx=6)
-    ui.botao_acao(fr_btn, "✖  Fechar", lambda: renderizar_menu_principal(container), cor="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "📊  Gerar", gerar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "\uf00d Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)

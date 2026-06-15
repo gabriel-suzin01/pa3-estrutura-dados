@@ -22,7 +22,8 @@ def renderizar_menu_principal(container: tk.Frame):
         ("1 - Produto", lambda: abrir_menu_produto(container)),
         ("2 - Pedidos", lambda: abrir_menu_pedidos(container)),
         ("3 - Relatórios", lambda: abrir_menu_relatorios(container)),
-        ("4 - Sair", container.quit)]
+        ("4 - Sair", container.quit)
+    ]
     
     for texto, cmd in opcoes:
         ui.botao_menu(container, texto, cmd, largura=34).pack(pady=6)
@@ -35,7 +36,7 @@ def iniciar_sistema():
     janela = ui.configurar_janela("Sistema de Pedidos — Bodega")
 
     # ── Cabeçalho Principal (Fixo no topo da janela) ──
-    ui.frame_cabecalho(janela, "⬛  SISTEMA DE PEDIDOS — BODEGA")
+    ui.frame_cabecalho(janela, "SISTEMA DE PEDIDOS — BODEGA")
     tk.Label(janela, text="Estrutura de Dados  |  3ª Fase / 2026", font=ui.FONTE_PEQUENA, bg=ui.COR_FUNDO, fg=ui.COR_BORDA).pack(pady=(4, 0))
     ui.separador(janela)
 
@@ -47,7 +48,7 @@ def iniciar_sistema():
 
     # ── Rodapé (Fixo na base da janela) ──
     ui.separador(janela)
-    tk.Label(janela, text="© 2026 UNIARP — Caçador, SC", font=ui.FONTE_PEQUENA, bg=ui.COR_FUNDO, fg=ui.COR_BORDA).pack(pady=4)
+    tk.Label(janela, text="© Felipe, Gabriel, Higor, Humberto e Leonardo — Caçador, SC", font=ui.FONTE_PEQUENA, bg=ui.COR_FUNDO, fg=ui.COR_BORDA).pack(pady=4)
 
     # Inicializa o miolo do sistema passando o container fixo
     renderizar_menu_principal(frame_conteudo_principal)

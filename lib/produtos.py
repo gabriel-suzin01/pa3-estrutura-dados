@@ -8,7 +8,7 @@ def abrir_menu_produto(container: tk.Frame):
     """Abre a janela do submenu Produto."""
     ui.limpar_container(container)
 
-    tk.Label(container, text="SUBMENU: PRODUTOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO).pack(pady=(0, 14))
+    tk.Label(container, text="PRODUTOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO).pack(pady=(0, 14))
 
     frame = ui.frame_conteudo(container)
     frame.pack_configure(anchor="center")
@@ -35,9 +35,9 @@ def _abrir_cadastro(container: tk.Frame):
     rotulos = [("id", "ID do Produto:"), ("tipo", "Tipo  [ 1-Bebida / 2-Lanche ]:"), ("desc", "Descrição:"), ("valor", "Valor Unitário (R$):")]
 
     for chave, rotulo in rotulos:
-        ui.label_campo(frame, rotulo).pack(anchor="w", pady=(6, 0))
+        ui.label_campo(frame, rotulo).pack(expand=False, pady=5)
         entrada = ui.entrada_campo(frame, largura=40)
-        entrada.pack(anchor="w")
+        entrada.pack(expand=False, pady=0)
         campos[chave] = entrada
 
     ui.separador(frame)
@@ -82,12 +82,12 @@ def _abrir_cadastro(container: tk.Frame):
         campos["id"].focus()
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
-    fr_btn.pack(pady=4)
-    ui.botao_acao(fr_btn, "💾  Salvar", salvar, cor="#313244").pack(side="left", padx=6)
+    fr_btn.pack(side="bottom", pady=4)
+    ui.botao_acao(fr_btn, "\uf0c7 Salvar", salvar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
 
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(fr_btn, "✖  Fechar", lambda: renderizar_menu_principal(container), cor="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "\uf00d Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
 
 #  -----------------------LISTAGEM--------------------------
 
@@ -114,4 +114,4 @@ def _abrir_listagem(container: tk.Frame):
     ui.separador(frame)
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(frame, "✖  Fechar", lambda: renderizar_menu_principal(container)).pack()
+    ui.botao_acao(frame, "\uf00d Fechar", lambda: renderizar_menu_principal(container)).pack()

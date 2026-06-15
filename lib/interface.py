@@ -28,7 +28,12 @@ def configurar_janela(titulo: str, fullscreen: bool = True, largura: int = 700, 
     janela.update_idletasks()
 
     if fullscreen:
-        janela.attributes("-fullscreen", True)
+        try:
+            # maximizando (modo windows)
+            janela.state("zoomed")
+        except tk.TclError:
+            # maximizando (modo linux)
+            janela.attributes("-zoomed", True)
     else:
         janela.resizable(False, False)
         x = (janela.winfo_screenwidth() - largura) // 2
@@ -66,10 +71,9 @@ def botao_menu(container: tk.Widget, texto: str, comando, largura: int = 50) -> 
     btn.bind("<Leave>", lambda e: btn.config(bg=COR_BTN))
     return btn
 
-def botao_acao(
-    container: tk.Widget, texto: str, comando, cor: str = "#45475a", largura: int = 25) -> tk.Button:
+def botao_acao(container: tk.Widget, texto: str, comando, bg: str = "#45475a", hover_bg: str = COR_BTN_HOVER, color: str = COR_TEXTO, largura: int = 25) -> tk.Button:
     """Cria um botão de ação menor (confirmar, cancelar etc.)."""
-    btn = tk.Button(container, text=texto, font=FONTE_NORMAL, width=largura, bg=cor, fg=COR_TEXTO, activebackground=COR_BTN_HOVER, activeforeground=COR_TITULO, 
+    btn = tk.Button(container, text=texto, font=FONTE_NORMAL, width=largura, bg=bg, fg=color, activebackground=hover_bg, activeforeground=COR_TITULO, 
                     relief="flat", cursor="hand2", command=comando, pady=4)
     return btn
 

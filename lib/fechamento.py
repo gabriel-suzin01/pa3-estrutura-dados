@@ -22,7 +22,7 @@ def abrir_fechamento_mesa(container: tk.Frame):
     def buscar():
         preencher_tabela(ent_mesa.get().strip(), frame, tree, lbl_total, btn_fechar)
 
-    ui.botao_acao(fr_topo, "🔍  Buscar", buscar, cor="#313244").pack(side="left", padx=8)
+    ui.botao_acao(fr_topo, "🔍  Buscar", buscar, bg="#313244").pack(side="left", padx=8)
 
     ui.separador(frame)
 
@@ -47,13 +47,13 @@ def abrir_fechamento_mesa(container: tk.Frame):
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(pady=6)
 
-    btn_fechar = ui.botao_acao(fr_btn, "✔  Fechar Mesa", lambda: _executar_fechamento(ent_mesa.get().strip(), tree, lbl_total, btn_fechar), cor="#313244")
+    btn_fechar = ui.botao_acao(fr_btn, "\uf058 Fechar Mesa", lambda: _executar_fechamento(ent_mesa.get().strip(), tree, lbl_total, btn_fechar), bg="#1D772A", hover_bg="#329C42")
     btn_fechar.pack(side="left", padx=6)
     btn_fechar.config(state="disabled")
 
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(fr_btn, "✖  Sair", lambda: renderizar_menu_principal(container), cor="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "\uf00d Sair", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
 
     # Chama pela primeira vez para renderizar pedidos
     buscar()

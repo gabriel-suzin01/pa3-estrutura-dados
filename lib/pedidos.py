@@ -10,7 +10,7 @@ def abrir_menu_pedidos(container: tk.Frame):
     """Submenu Pedidos — Renderizado limpando o mesmo container."""
     ui.limpar_container(container)
 
-    tk.Label(container, text="SUBMENU: PEDIDOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO).pack(pady=(0, 14))
+    tk.Label(container, text="PEDIDOS", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO).pack(pady=(0, 14))
 
     from sistema import renderizar_menu_principal
 
@@ -122,8 +122,8 @@ def abrir_lancamento_pedido(container: tk.Frame):
         lbl_total.config(text="")
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
-    fr_btn.pack(pady=6)
-    ui.botao_acao(fr_btn, "✔  Lançar Pedido", confirmar_pedido, cor="#313244").pack(side="left", padx=6)
+    fr_btn.pack(side="bottom", pady=6)
+    ui.botao_acao(fr_btn, "\uf058 Lançar Pedido", confirmar_pedido, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(fr_btn, "✖  Fechar", lambda: renderizar_menu_principal(container), cor="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "\uf00d Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
