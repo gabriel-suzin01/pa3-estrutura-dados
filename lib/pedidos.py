@@ -123,7 +123,7 @@ def abrir_lancamento_pedido(container: tk.Frame):
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(side="bottom", pady=6)
-    ui.botao_acao(fr_btn, "\uf058 Lançar Pedido", confirmar_pedido, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "✔️ Lançar Pedido", confirmar_pedido, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(fr_btn, "\uf00d Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "❌ Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)

@@ -91,7 +91,7 @@ def _relatorio_faturamento_geral(container: tk.Frame):
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(pady=4)
     ui.botao_acao(fr_btn, "📊  Gerar", gerar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
-    ui.botao_acao(fr_btn, "\uf00d Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "❌ Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
 
 #  RELATÓRIO 2 — Faturamento por tipo de produto
 
@@ -187,4 +187,4 @@ def _relatorio_por_tipo(container: tk.Frame):
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(pady=4)
     ui.botao_acao(fr_btn, "📊  Gerar", gerar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
-    ui.botao_acao(fr_btn, "\uf00d Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "❌ Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)

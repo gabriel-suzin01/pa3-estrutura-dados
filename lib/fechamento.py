@@ -47,7 +47,7 @@ def abrir_fechamento_mesa(container: tk.Frame):
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(pady=6)
 
-    btn_fechar = ui.botao_acao(fr_btn, "\uf058 Fechar Mesa", lambda: _executar_fechamento(ent_mesa.get().strip(), tree, lbl_total, btn_fechar), bg="#1D772A", hover_bg="#329C42")
+    btn_fechar = ui.botao_acao(fr_btn, "❌ Fechar Mesa", lambda: _executar_fechamento(ent_mesa.get().strip(), tree, lbl_total, btn_fechar), bg="#1D772A", hover_bg="#329C42")
     btn_fechar.pack(side="left", padx=6)
     btn_fechar.config(state="disabled")
 

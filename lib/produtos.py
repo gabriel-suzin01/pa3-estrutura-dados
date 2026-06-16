@@ -88,15 +88,15 @@ def _abrir_cadastro(container: tk.Frame):
 
         for e in campos.values():
             e.delete(0, tk.END)
-        campos["id"].focus()
+        campos["tipo"].focus()
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(side="bottom", pady=4)
-    ui.botao_acao(fr_btn, "\uf0c7 Salvar", salvar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "💾 Salvar", salvar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
 
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(fr_btn, "\uf00d Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "❌ Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
 
 #  -----------------------LISTAGEM--------------------------
 
@@ -123,4 +123,4 @@ def _abrir_listagem(container: tk.Frame):
     ui.separador(frame)
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(frame, "\uf00d Fechar", lambda: renderizar_menu_principal(container)).pack()
+    ui.botao_acao(frame, "❌ Fechar", lambda: renderizar_menu_principal(container)).pack()
