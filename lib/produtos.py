@@ -32,7 +32,11 @@ def _abrir_cadastro(container: tk.Frame):
     frame = ui.frame_conteudo(container)
 
     campos = {}
-    rotulos = [("id", "ID do Produto:"), ("tipo", "Tipo  [ 1-Bebida / 2-Lanche ]:"), ("desc", "Descrição:"), ("valor", "Valor Unitário (R$):")]
+    rotulos = [
+        ("tipo", "Tipo  [ 1-Bebida / 2-Lanche ]:"),
+        ("desc", "Nome:"),
+        ("valor", "Valor Unitário (R$):"),
+    ]
 
     for chave, rotulo in rotulos:
         ui.label_campo(frame, rotulo).pack(expand=False, pady=5)
@@ -43,20 +47,11 @@ def _abrir_cadastro(container: tk.Frame):
     ui.separador(frame)
 
     def salvar():
-        id_p = campos["id"].get().strip()
         tipo = campos["tipo"].get().strip()
         desc = campos["desc"].get().strip()
         valor = campos["valor"].get().strip().replace(",", ".")
 
         # Validações
-        ok, msg = val.validar_inteiro_positivo(id_p, "ID do produto")
-        if not ok:
-            ui.mensagem_erro(msg)
-            return
-
-        if arq.produto_existe(id_p):
-            ui.mensagem_erro(f"Já existe um produto com ID {id_p}.")
-            return
 
         ok, msg = val.validar_tipo_produto(tipo)
         if not ok:
@@ -72,8 +67,22 @@ def _abrir_cadastro(container: tk.Frame):
         if not ok:
             ui.mensagem_erro(msg)
             return
+        
+        produtos = arq.ler_produtos()
 
-        produto = {"id_produto": id_p, "id_tipo_produto": tipo, "descricao": desc, "valor": f"{float(valor):.2f}"}
+        id_produto = 0
+        if produtos:
+            for p in produtos:
+                novo_id = int(p.get("id_produto", 0))
+                if novo_id > id_produto:
+                    id_produto = novo_id
+                
+        produto = {
+            "id_produto": id_produto + 1,
+            "id_tipo_produto": tipo,
+            "descricao": desc,
+            "valor": f"{float(valor):.2f}",
+        }
         arq.gravar_produto(produto)
         ui.mensagem_sucesso(f"Produto '{desc}' cadastrado com sucesso!")
 
@@ -108,8 +117,8 @@ def _abrir_listagem(container: tk.Frame):
     else:
         for p in produtos:
             tipo_txt = val.tipo_para_texto(p["id_tipo_produto"])
-            valor_fmt = f"R$ {float(p['valor']):.2f}".replace(".", ",")
-            tree.insert("", "end", values=(p["id_produto"], tipo_txt, p["descricao"], valor_fmt))
+            valor_fmt = f"R$ {float(p.get("valor")):.2f}".replace(".", ",")
+            tree.insert("", "end", values=(p.get("id_produto"), tipo_txt, p["descricao"], valor_fmt))
 
     ui.separador(frame)
     from sistema import renderizar_menu_principal

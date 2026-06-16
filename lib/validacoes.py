@@ -10,9 +10,9 @@ def validar_inteiro_positivo(valor, nome_campo="Valor"):
         n = int(str(valor).strip())
         if n <= 0:
             return False, "{} deve ser maior que zero.".format(nome_campo)
-        return True, ""
+        return (True, "")
     except ValueError:
-        return False, "{} deve ser um número inteiro válido.".format(nome_campo)
+        return (False, "{} deve ser um número inteiro válido.".format(nome_campo))
 
 def validar_float_positivo(valor, nome_campo="Valor"):
     """Valida se o valor é um número decimal positivo."""
