@@ -29,15 +29,50 @@ def abrir_fechamento_mesa(container: tk.Frame):
     # ── Tabela de itens ──
     colunas = [
         ("mesa", "Mesa", 80),
-        ("id", "ID.", 60),
+        ("id", "Numero do Pedido", 60),
         ("desc", "Produto", 220),
-        ("qtd", "Qtd.", 60),
-        ("unit", "V. Unitário", 120),
-        ("total", "V. Total", 120)]
+        ("qtd", "Quantidade", 60),
+        ("unit", "Valor Unitário", 120),
+        ("total", "Valor Total", 120)]
     
     fr_tree = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_tree.pack(fill="both", expand=True)
     tree = ui.criar_treeview(fr_tree, colunas, altura=10)
+
+    mesa_selecionada = {"mesa": None}
+
+    def ao_selecionar(event):
+        selecionados = tree.selection()
+
+        if not selecionados:
+            return
+
+        item = selecionados[0]
+        valores = tree.item(item, "values")
+
+        if not valores:
+            return
+
+        mesa = str(valores[0])
+
+        itens_mesa = []
+
+        for iid in tree.get_children():
+            vals = tree.item(iid, "values")
+            if str(vals[0]) == mesa:
+                itens_mesa.append(iid)
+
+        atual = set(tree.selection())
+        desejado = set(itens_mesa)
+
+        # evita disparar seleção infinitamente
+        if atual != desejado:
+            tree.selection_set(itens_mesa)
+
+        mesa_selecionada["mesa"] = mesa
+        btn_fechar.config(state="normal")
+
+    tree.bind("<<TreeviewSelect>>", ao_selecionar)
 
     ui.separador(frame)
 
@@ -48,7 +83,18 @@ def abrir_fechamento_mesa(container: tk.Frame):
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(pady=6)
 
-    btn_fechar = ui.botao_acao(fr_btn, "❌ Fechar Mesa", lambda: _executar_fechamento(ent_mesa.get().strip(), tree, lbl_total, btn_fechar), bg="#1D772A", hover_bg="#329C42")
+    btn_fechar = ui.botao_acao(
+        fr_btn,
+        "❌ Fechar Mesa",
+        lambda: _executar_fechamento(
+            mesa_selecionada["mesa"],
+            tree,
+            lbl_total,
+            btn_fechar
+        ),
+        bg="#1D772A",
+        hover_bg="#329C42"
+    )
     btn_fechar.pack(side="left", padx=6)
     btn_fechar.config(state="disabled")
 
@@ -107,21 +153,18 @@ def preencher_tabela(mesa, frame, tree, lbl_total, btn_fechar):
     texto_total = f"TOTAL DA MESA {mesa}" if mesa else "TOTAL GERAL EM ABERTO"
     lbl_total.config(text=f"{texto_total}: R$ {total_geral:.2f}".replace(".", ","))
     
-    # Só habilita o botão de fechar se uma mesa específica foi digitada
-    if mesa:
-        btn_fechar.config(state="normal")
-    else:
-        btn_fechar.config(state="disabled")
+    # O botão será habilitado apenas quando uma mesa for selecionada
+    btn_fechar.config(state="disabled")
 
 def _executar_fechamento(mesa, tree, lbl_total, btn_fechar):
     """Confirma e executa o fechamento da mesa."""
+    if not mesa:
+        ui.mensagem_aviso("Selecione uma mesa para fechar.")
+        return
     if not tree.get_children():
         return
     if not ui.confirmar(f"Confirmar fechamento da Mesa {mesa}?\nOs pedidos serão marcados como faturados."):
         return
     arq.fechar_mesa(mesa)
     ui.mensagem_sucesso(f"Mesa {mesa} fechada com sucesso!")
-    for item in tree.get_children():
-        tree.delete(item)
-    lbl_total.config(text="")
-    btn_fechar.config(state="disabled")
+    preencher_tabela("", None, tree, lbl_total, btn_fechar)
