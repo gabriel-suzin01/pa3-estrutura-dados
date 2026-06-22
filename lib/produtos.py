@@ -27,7 +27,7 @@ def abrir_menu_produto(container: tk.Frame):
 
 def _abrir_cadastro(container: tk.Frame):
     ui.limpar_container(container)
-    ui.frame_cabecalho(container, "⬛  CADASTRO DE PRODUTO")
+    ui.frame_cabecalho(container, "CADASTRO DE PRODUTO")
 
     frame = ui.frame_conteudo(container)
 
@@ -96,13 +96,13 @@ def _abrir_cadastro(container: tk.Frame):
 
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(fr_btn, "❌ Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "⬅️ VOLTAR", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
 
 #  -----------------------LISTAGEM--------------------------
 
 def _abrir_listagem(container: tk.Frame):
     ui.limpar_container(container)
-    ui.frame_cabecalho(container, "⬛  LISTAGEM DE PRODUTOS")
+    ui.frame_cabecalho(container, "LISTAGEM DE PRODUTOS")
 
     frame = ui.frame_conteudo(container)
 
@@ -123,4 +123,4 @@ def _abrir_listagem(container: tk.Frame):
     ui.separador(frame)
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(frame, "❌ Fechar", lambda: renderizar_menu_principal(container)).pack()
+    ui.botao_acao(frame, "⬅️ VOLTAR", lambda: renderizar_menu_principal(container)).pack()

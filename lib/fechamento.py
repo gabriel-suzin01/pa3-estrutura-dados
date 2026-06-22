@@ -7,7 +7,7 @@ def abrir_fechamento_mesa(container: tk.Frame):
     """Abre a tela de fechamento de mesa."""
     ui.limpar_container(container)
 
-    ui.frame_cabecalho(container, "⬛  FECHAMENTO DE MESA")
+    ui.frame_cabecalho(container, "FECHAMENTO DE MESA")
 
     frame = ui.frame_conteudo(container)
 
@@ -54,7 +54,7 @@ def abrir_fechamento_mesa(container: tk.Frame):
 
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(fr_btn, "\uf00d Sair", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "⬅️ VOLTAR", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
 
     # Chama pela primeira vez para renderizar pedidos
     buscar()
