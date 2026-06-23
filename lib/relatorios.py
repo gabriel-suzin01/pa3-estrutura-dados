@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from datetime import datetime
 from lib import interface as ui
 from lib import validacoes as val
 from lib import arquivos as arq
@@ -17,9 +16,10 @@ def abrir_menu_relatorios(container: tk.Frame):
     from sistema import renderizar_menu_principal
 
     opcoes = [
-        ("1 - Faturamento Geral entre Datas", lambda: _relatorio_faturamento_geral(container)),
-        ("2 - Faturamento por Tipo de Produto", lambda: _relatorio_por_tipo(container)),
-        ("3 - Voltar ao Menu Principal", lambda: renderizar_menu_principal(container))]
+        ("1 - Overview", lambda: _overview(container)),
+        ("2 - Faturamento Geral entre Datas", lambda: _relatorio_faturamento_geral(container)),
+        ("3 - Faturamento por Tipo de Produto", lambda: _relatorio_por_tipo(container)),
+        ("4 - Voltar ao Menu Principal", lambda: renderizar_menu_principal(container))]
     
     for texto, cmd in opcoes:
         ui.botao_menu(frame, texto, cmd).pack(pady=5)
@@ -186,5 +186,111 @@ def _relatorio_por_tipo(container: tk.Frame):
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(pady=4)
-    ui.botao_acao(fr_btn, "📊  Gerar", gerar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "📊 Gerar", gerar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "❌ Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
+
+
+def _format_pedidos_overview(valores: dict, id_relatorio: int) -> dict:
+    """
+    ### ID do relatório: 1, 2, 3, 4
+
+    - 1 => relatório mensal
+    - 2 => relatório por tipo de produto
+    - 3 => relatório por mesa
+    - 4 => relatório por produto
+    """
+
+    from collections import defaultdict
+
+    resultado = defaultdict(float)
+
+    for row in valores:
+        if row["status_pedido"] == "A":
+            continue
+
+        if id_relatorio == 2:
+            chave = row["id_tipo_produto"]
+        elif id_relatorio == 3:
+            chave = row["mesa"]
+        elif id_relatorio == 4:
+            chave = row["id_produto"]
+        else:
+            chave = row["data"]
+        
+        resultado[chave] += float(row["valor_total"])
+        
+    return resultado
+
+def _overview(container: tk.Frame):
+    from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+    from matplotlib.pyplot import subplots
+    import mplcursors
+    import pandas as pd
+
+    pedidos = arq.ler_pedidos()
+
+    def _dict_to_df(dicionario):
+        return pd.DataFrame({
+            "x": list(dicionario.keys()),
+            "y": list(dicionario.values())
+        })
+
+    rel_data = _dict_to_df(_format_pedidos_overview(pedidos, 1))
+    rel_tprd = _dict_to_df(_format_pedidos_overview(pedidos, 2))
+    rel_mesa = _dict_to_df(_format_pedidos_overview(pedidos, 3))
+    rel_prod = _dict_to_df(_format_pedidos_overview(pedidos, 4))
+
+    df_data = pd.DataFrame(rel_data)
+    df_tprd = pd.DataFrame(rel_tprd)
+    df_mesa = pd.DataFrame(rel_mesa)
+    df_prod = pd.DataFrame(rel_prod)
+
+    fig, axes = subplots(2, 2, figsize=(8, 6), dpi=100)
+    fig.patch.set_facecolor("none")
+
+    # tornando eixos transparentes
+    COR_FONTE = "white"
+
+    listas_df = [df_data, df_tprd, df_mesa, df_prod]
+    titulos = ["Valor faturado por data", "Valor faturado por tipo de produto", "Valor faturado por mesa", "Valor faturado por produto"]
+    xlbls = ["Data", "Tipo Prod.", "Mesa", "Produto"]
+    ylbl = "Valor (R$)"
+    cores = ["skyblue", "salmon", "lightgreen", "gold"]
+
+    for i, ax in enumerate(axes.flat):
+        df = listas_df[i]
+        
+        bars = ax.bar(df["x"], df["y"], color=cores[i])
+
+        mplcursors.cursor(bars, hover=True)
+            
+        ax.set_title(titulos[i], color=COR_FONTE)
+        ax.set_xlabel(xlbls[i], color=COR_FONTE)
+        ax.set_ylabel(ylbl, color=COR_FONTE)
+
+        ax.tick_params(axis="x", colors=COR_FONTE)
+        ax.tick_params(axis="y", colors=COR_FONTE)
+        
+        # mudando a cor das bordas dos eixos para branco também
+        for spine in ax.spines.values():
+            spine.set_edgecolor(COR_FONTE)
+            
+        ax.set_facecolor("none")
+    
+    fig.tight_layout()
+
+    ui.limpar_container(container)
+
+    tk.Label(container, text="OVERVIEW", font=ui.FONTE_TITULO, bg=ui.COR_FUNDO, fg=ui.COR_TITULO).pack(pady=(0, 14))
+
+    canvas = FigureCanvasTkAgg(fig, master=container)
+    canvas.draw()
+    canvas_widget = canvas.get_tk_widget()
+    canvas_widget.configure(bg=container.cget("bg"), highlightthickness=0)
+    canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+    from sistema import renderizar_menu_principal
+
+    fr_btn = tk.Frame(container, bg=ui.COR_FUNDO)
+    fr_btn.pack(pady=4)
     ui.botao_acao(fr_btn, "❌ Fechar", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)
