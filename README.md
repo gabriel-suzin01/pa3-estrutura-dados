@@ -28,3 +28,15 @@ sistema/
 │   ├── relatorios.py            # Filtros de faturamento e exibição de relatórios
 │   └── validacoes.py            # Regras de negócio (datas, valores e tipos válidos)
 └── sistema.py                   # Ponto de entrada do programa (Menu Principal)
+```
+
+## Para instalação do .exe / .elf:
+```
+pyinstaller --noconfirm --onefile --windowed \
+--collect-all="matplotlib" \
+--collect-all="pandas" \
+--hidden-import="mplcursors" \
+--add-data="dados:dados" \
+--add-data="lib:lib" \
+sistema.py
+```

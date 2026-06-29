@@ -1,8 +1,17 @@
 import csv
 import os
+import sys
 
-BASE = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dados")
+if getattr(sys, 'frozen', False):
+    # Se rodando via PyInstaller, o executável está na pasta raiz
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    # Se rodando como script Python
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+BASE = os.path.join(BASE_DIR, "dados")
+ARQUIVO_PRODUTOS = os.path.join(BASE, "produtos.csv")
+ARQUIVO_PEDIDOS = os.path.join(BASE, "pedidos.csv")
 
 ARQUIVO_PRODUTOS = os.path.join(BASE, "produtos.csv")
 ARQUIVO_PEDIDOS = os.path.join(BASE, "pedidos.csv")
