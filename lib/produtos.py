@@ -117,16 +117,65 @@ def _abrir_listagem(container: tk.Frame):
     fr_tree.pack(fill="both", expand=True)
     tree = ui.criar_treeview(fr_tree, colunas, altura=14)
 
-    produtos = arq.ler_produtos()
-    if not produtos:
-        ui.mensagem_aviso("Nenhum produto cadastrado ainda.")
-    else:
-        for p in produtos:
-            tipo_txt = val.tipo_para_texto(p["id_tipo_produto"])
-            valor_fmt = f"R$ {float(p.get("valor")):.2f}".replace(".", ",")
-            tree.insert("", "end", values=(p.get("id_produto"), tipo_txt, p["descricao"], valor_fmt))
+    produto_selecionado = None
+
+    def ao_selecionar(event):
+        btn_remover.config(state="normal")
+
+    tree.bind("<<TreeviewSelect>>", ao_selecionar)
 
     ui.separador(frame)
+
     from sistema import renderizar_menu_principal
 
-    ui.botao_acao(frame, "⬅️ VOLTAR", lambda: renderizar_menu_principal(container)).pack()
+    btn_frame = tk.Frame(frame, bg=ui.COR_FUNDO)
+    btn_frame.pack(pady=6)
+
+    btn_remover = ui.botao_acao(btn_frame, "❌ REMOVER", lambda: _executar_delecao(tree, btn_remover))
+    btn_remover.pack(side="left", padx=6)
+    btn_remover.config(state="disabled")
+
+    ui.botao_acao(btn_frame, "⬅️ VOLTAR", lambda: renderizar_menu_principal(container)).pack()
+
+    preencher_tabela(tree, btn_remover)
+
+def preencher_tabela(tree, btn_remover):
+    """Busca produtos e preenche a tabela."""
+
+    for item in tree.get_children():
+        tree.delete(item)
+
+    produtos = {p.get("id_produto"): p for p in arq.ler_produtos()}
+
+    for id, produto in produtos.items():
+        tipo_txt = val.tipo_para_texto(produto["id_tipo_produto"])
+        valor_fmt = f"R$ {float(produto.get("valor")):.2f}".replace(".", ",")
+        tree.insert("", "end", values=(produto.get("id_produto"), tipo_txt, produto["descricao"], valor_fmt))
+
+    btn_remover.config(state="disabled")
+
+def _executar_delecao(tree, btn_remover):
+    """Confirma exclusão do produto."""
+
+    selecionados = tree.selection()
+
+    if not selecionados:
+        ui.mensagem_aviso("Selecione um produto para fechar.")
+        return
+    if not tree.get_children():
+        return
+    
+    id_produto = tree.item(selecionados[0], "values")[0]
+
+    if not id_produto:
+        ui.mensagem_erro("ID não encontrado!")
+        return
+    
+    produto = arq.buscar_produto_por_id(id_produto)
+
+    if not ui.confirmar(f"Deseja realmente excluir o produto {produto.get("descricao", f"ID #{id_produto}")}?\n"):
+        return
+    
+    arq.remover_produto(id_produto)
+    ui.mensagem_sucesso(f"Produto {produto.get("descricao", f"ID #{id_produto}")} excluído com sucesso!")
+    preencher_tabela(tree, btn_remover)

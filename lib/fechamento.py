@@ -107,13 +107,11 @@ def abrir_fechamento_mesa(container: tk.Frame):
 
 def preencher_tabela(mesa, frame, tree, lbl_total, btn_fechar):
     """Busca pedidos da mesa e preenche a tabela."""
-    # 1. Limpa a tabela atual
     for item in tree.get_children():
         tree.delete(item)
     lbl_total.config(text="")
     btn_fechar.config(state="disabled")
 
-    # 2. Busca pedidos (se mesa for "", arq.pedidos_abertos_por_mesa retorna todos)
     pedidos = arq.pedidos_abertos_por_mesa(mesa)
     
     if not pedidos:
@@ -121,16 +119,14 @@ def preencher_tabela(mesa, frame, tree, lbl_total, btn_fechar):
         ui.mensagem_aviso(msg)
         return
 
-    # 3. Mapeia produtos para pegar a descrição correta [2]
     produtos_map = {p.get("id_produto"): p for p in arq.ler_produtos()}
 
     total_geral = 0.0
     for p in pedidos:
         id_ped = p.get("id_pedido", "N/D")
         id_prod = p.get("id_produto", "N/D")
-        mesa_id = p.get("mesa", "N/D") # Pega o ID da mesa direto do pedido [1]
+        mesa_id = p.get("mesa", "N/D")
         
-        # Busca a descrição correta usando o ID do produto
         prod_info = produtos_map.get(id_prod, {})
         desc = prod_info.get("descricao", f"Produto {id_prod}")
         
@@ -139,7 +135,6 @@ def preencher_tabela(mesa, frame, tree, lbl_total, btn_fechar):
         val_tot = float(p.get("valor_total", 0))
         total_geral += val_tot
 
-        # 4. INSERÇÃO: Usa mesa_id (do arquivo) em vez da variável mesa (da busca)
         tree.insert("", "end", values=(
             mesa_id, 
             id_ped, 
@@ -149,11 +144,9 @@ def preencher_tabela(mesa, frame, tree, lbl_total, btn_fechar):
             f"R$ {val_tot:.2f}".replace(".", ",")
         ))
 
-    # 5. Atualiza o label de total
     texto_total = f"TOTAL DA MESA {mesa}" if mesa else "TOTAL GERAL EM ABERTO"
     lbl_total.config(text=f"{texto_total}: R$ {total_geral:.2f}".replace(".", ","))
     
-    # O botão será habilitado apenas quando uma mesa for selecionada
     btn_fechar.config(state="disabled")
 
 def _executar_fechamento(mesa, tree, lbl_total, btn_fechar):

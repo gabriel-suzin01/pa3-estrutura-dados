@@ -38,6 +38,16 @@ def gravar_produto(produto):
         writer = csv.DictWriter(f, fieldnames=CABECALHO_PRODUTOS)
         writer.writerow(produto)
 
+def remover_produto(id_produto):
+    produtos = ler_produtos()
+    
+    produtos_restantes = [p for p in produtos if p["id_produto"] != str(id_produto).strip()]
+    
+    with open(ARQUIVO_PRODUTOS, mode="w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["id_produto", "id_tipo_produto", "descricao", "valor"])
+        writer.writeheader()
+        writer.writerows(produtos_restantes)
+
 def produto_existe(id_produto):
     """Verifica se ja existe um produto com esse id."""
     return any(p["id_produto"] == str(id_produto).strip() for p in ler_produtos())
