@@ -29,49 +29,46 @@ def abrir_lancamento_pedido(container: tk.Frame):
 
     frame = ui.frame_conteudo(container)
 
-    # ── Mesa ──
-    ui.label_campo(frame, "Número da Mesa:").pack(anchor="w", pady=(4, 0))
-    ent_mesa = ui.entrada_campo(frame, 20)
-    ent_mesa.pack(anchor="w")
-
-    ui.separador(frame)
-
-    # ── Tabela de produtos disponíveis ──
-    ui.label_campo(frame, "Produtos Disponíveis:").pack(anchor="w", pady=(2, 2))
-
-    colunas = [("id", "ID", 60), ("tipo", "Tipo", 90), ("desc", "Descrição", 240), ("valor", "Valor Unit.", 110)]
-    
-    fr_tree = tk.Frame(frame, bg=ui.COR_FUNDO)
-    fr_tree.pack(fill="x")
-    tree = ui.criar_treeview(fr_tree, colunas, altura=7)
-
-    produtos = arq.ler_produtos()
-    for p in produtos:
-        tipo_txt = val.tipo_para_texto(p["id_tipo_produto"])
-        valor_fmt = f"R$ {float(p['valor']):.2f}".replace(".", ",")
-        tree.insert("", "end", values=(p["id_produto"], tipo_txt, p["descricao"], valor_fmt))
-
-    ui.separador(frame)
+    campos = {}
+    rotulos = [
+        ("mesa", "Número da Mesa:"),
+        ("descricao", "Produto:"),
+        ("qtd", "Quantidade:")
+    ]
 
     # ── Seleção do produto e quantidade ──
     fr_sel = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_sel.pack(fill="x")
 
-    tk.Label(fr_sel, text="ID do Produto:", font=ui.FONTE_NORMAL, bg=ui.COR_FUNDO, fg=ui.COR_TEXTO).grid(row=0, column=0, sticky="w", padx=(0, 8))
-    ent_id = ui.entrada_campo(fr_sel, 10)
-    ent_id.grid(row=0, column=1, sticky="w")
+    for chave, rotulo in rotulos:
+        ui.label_campo(frame, rotulo).pack(expand=False, pady=5)
 
-    tk.Label(fr_sel, text="Quantidade:", font=ui.FONTE_NORMAL, bg=ui.COR_FUNDO, fg=ui.COR_TEXTO).grid(row=0, column=2, sticky="w", padx=(16, 8))
-    ent_qtd = ui.entrada_campo(fr_sel, 10)
-    ent_qtd.grid(row=0, column=3, sticky="w")
+        if chave == "descricao":
+            entrada = ui.entrada_combobox(frame, valores=[f"({p.get("id_produto")}) - {p.get("descricao")}" for p in arq.ler_produtos()], largura=53)
+        else:
+            entrada = ui.entrada_campo(frame, largura=40)
+
+        entrada.pack(expand=False, pady=0)
+        campos[chave] = entrada
 
     lbl_total = tk.Label(frame, text="", font=ui.FONTE_NORMAL, bg=ui.COR_FUNDO, fg=ui.COR_SUCESSO)
     lbl_total.pack(anchor="w", pady=(4, 0))
 
     def confirmar_pedido():
-        mesa = ent_mesa.get().strip()
-        id_p = ent_id.get().strip()
-        qtd_s = ent_qtd.get().strip()
+        import re
+
+        mesa = campos["mesa"].get().strip()
+
+        id_desc_p = campos["descricao"].get().strip()
+        match = re.search(r"\((.*?)\)", id_desc_p)
+
+        if match:
+            id_p = int(match.group(1))
+        else:
+            ui.mensagem_erro("ID do produto não foi encontrado!")
+            return
+
+        qtd_s = campos["qtd"].get().strip()
 
         ok, msg = val.validar_inteiro_positivo(mesa, "Número da mesa")
         if not ok:
@@ -117,13 +114,15 @@ def abrir_lancamento_pedido(container: tk.Frame):
             f"Pedido #{id_pedido} lançado!\n"
             f"Mesa {mesa} — {produto['descricao']} x{qtd} = R$ {val_total:.2f}"
         )
-        ent_id.delete(0, tk.END)
-        ent_qtd.delete(0, tk.END)
+        campos["id_produto"].delete(0, tk.END)
+        campos["qtd"].delete(0, tk.END)
         lbl_total.config(text="")
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(side="bottom", pady=6)
-    ui.botao_acao(fr_btn, "✔️ Lançar Pedido", confirmar_pedido, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+
+    ui.botao_acao(fr_btn, "✔️ LANÇAR PEDIDO", confirmar_pedido, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+
     from sistema import renderizar_menu_principal
 
     ui.botao_acao(fr_btn, "⬅️ VOLTAR", lambda: renderizar_menu_principal(container), bg="#45475a").pack(side="left", padx=6)

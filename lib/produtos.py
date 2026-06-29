@@ -48,8 +48,6 @@ def _abrir_cadastro(container: tk.Frame):
         entrada.pack(expand=False, pady=0)
         campos[chave] = entrada
 
-    ui.separador(frame)
-
     def salvar():
         tipo = campos["tipo"].get().strip()
         desc = campos["desc"].get().strip()
@@ -98,7 +96,7 @@ def _abrir_cadastro(container: tk.Frame):
 
     fr_btn = tk.Frame(frame, bg=ui.COR_FUNDO)
     fr_btn.pack(side="bottom", pady=4)
-    ui.botao_acao(fr_btn, "💾 Salvar", salvar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
+    ui.botao_acao(fr_btn, "💾 SALVAR", salvar, bg="#1D772A", hover_bg="#329C42").pack(side="left", padx=6)
 
     from sistema import renderizar_menu_principal
 

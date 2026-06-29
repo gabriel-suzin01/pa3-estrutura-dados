@@ -22,7 +22,7 @@ def abrir_fechamento_mesa(container: tk.Frame):
     def buscar():
         preencher_tabela(ent_mesa.get().strip(), frame, tree, lbl_total, btn_fechar)
 
-    ui.botao_acao(fr_topo, "🔍  Buscar", buscar, bg="#313244").pack(side="left", padx=8)
+    ui.botao_acao(fr_topo, "🔍 BUSCAR", buscar, bg="#313244").pack(side="left", padx=8)
 
     ui.separador(frame)
 
