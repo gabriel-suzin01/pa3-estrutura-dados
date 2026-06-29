@@ -33,14 +33,18 @@ def _abrir_cadastro(container: tk.Frame):
 
     campos = {}
     rotulos = [
-        ("tipo", "Tipo  [ 1-Bebida / 2-Lanche ]:"),
+        ("tipo", "Tipo:"),
         ("desc", "Nome:"),
         ("valor", "Valor Unitário (R$):"),
     ]
 
     for chave, rotulo in rotulos:
         ui.label_campo(frame, rotulo).pack(expand=False, pady=5)
-        entrada = ui.entrada_campo(frame, largura=40)
+
+        if chave == "tipo":
+            entrada = ui.entrada_combobox(frame, valores=["Bebida", "Lanche"], largura=53)
+        else:
+            entrada = ui.entrada_campo(frame, largura=40)
         entrada.pack(expand=False, pady=0)
         campos[chave] = entrada
 
@@ -57,6 +61,8 @@ def _abrir_cadastro(container: tk.Frame):
         if not ok:
             ui.mensagem_erro(msg)
             return
+        
+        conversao_tipo = "1" if tipo.lower() == "bebida" else "2"
 
         ok, msg = val.validar_descricao(desc)
         if not ok:
@@ -76,10 +82,10 @@ def _abrir_cadastro(container: tk.Frame):
                 novo_id = int(p.get("id_produto", 0))
                 if novo_id > id_produto:
                     id_produto = novo_id
-                
+
         produto = {
             "id_produto": id_produto + 1,
-            "id_tipo_produto": tipo,
+            "id_tipo_produto": conversao_tipo,
             "descricao": desc,
             "valor": f"{float(valor):.2f}",
         }

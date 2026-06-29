@@ -115,7 +115,7 @@ def _relatorio_por_tipo(container: tk.Frame):
 
     # Combobox de tipo
     tk.Label(fr_datas, text="Tipo:", font=ui.FONTE_NORMAL, bg=ui.COR_FUNDO, fg=ui.COR_TEXTO).grid(row=0, column=4, sticky="w", padx=(0, 4))
-    combo_tipo = ttk.Combobox(fr_datas, values=["Todos", "Bebida", "Lanche"], width=8, state="readonly", font=ui.FONTE_NORMAL)
+    combo_tipo = ui.entrada_combobox(fr_datas, valores=["Todos", "Bebida", "Lanche"])
     combo_tipo.current(0)
     combo_tipo.grid(row=0, column=5)
 

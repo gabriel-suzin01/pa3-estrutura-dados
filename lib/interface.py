@@ -8,7 +8,7 @@ FONTE_CABEC = ("Courier New", 17, "bold")
 FONTE_PEQUENA = ("Courier New", 12)
 
 COR_FUNDO = "#1e1e2e"
-COR_JANELA_PRINCIPALNEL = "#2a2a3e"
+COR_JANELA_PRINCIPAL = "#2a2a3e"
 COR_BORDA = "#4a4a6a"
 COR_TEXTO = "#cdd6f4"
 COR_TITULO = "#89b4fa"
@@ -43,13 +43,13 @@ def configurar_janela(titulo: str, fullscreen: bool = True, largura: int = 700, 
 
 def frame_cabecalho(container: tk.Widget, texto: str) -> tk.Frame:
     """Cria um frame de cabeçalho estilizado."""
-    frame = tk.Frame(container, bg=COR_JANELA_PRINCIPALNEL, pady=8)
+    frame = tk.Frame(container, bg=COR_JANELA_PRINCIPAL, pady=8)
     frame.pack(fill="x", padx=10, pady=(10, 0))
 
     linha_topo = tk.Frame(frame, bg=COR_BORDA, height=2)
     linha_topo.pack(fill="x", padx=5)
 
-    lbl = tk.Label(frame, text=texto, font=FONTE_CABEC, bg=COR_JANELA_PRINCIPALNEL, fg=COR_TITULO)
+    lbl = tk.Label(frame, text=texto, font=FONTE_CABEC, bg=COR_JANELA_PRINCIPAL, fg=COR_TITULO)
     lbl.pack(pady=4)
 
     linha_base = tk.Frame(frame, bg=COR_BORDA, height=2)
@@ -83,7 +83,11 @@ def label_campo(container: tk.Widget, texto: str) -> tk.Label:
 
 def entrada_campo(container: tk.Widget, largura: int = 30) -> tk.Entry:
     """Campo de entrada padrão."""
-    entrada = tk.Entry(container, font=FONTE_NORMAL, width=largura, bg=COR_JANELA_PRINCIPALNEL, fg=COR_TEXTO, insertbackground=COR_TEXTO, relief="flat", bd=4)
+    entrada = tk.Entry(container, font=FONTE_NORMAL, width=largura, bg=COR_JANELA_PRINCIPAL, fg=COR_TEXTO, insertbackground=COR_TEXTO, relief="flat", bd=4)
+    return entrada
+
+def entrada_combobox(container: tk.Widget, valores = [""], largura = 40) -> ttk.Combobox:
+    entrada = ttk.Combobox(container, values=valores, state="readonly", width=largura)
     return entrada
 
 def mensagem_sucesso(texto: str):
@@ -103,7 +107,7 @@ def criar_treeview(container: tk.Widget, colunas, altura: int = 12) -> ttk.Treev
     colunas: lista de (id, titulo, largura)"""
     style = ttk.Style()
     style.theme_use("default")
-    style.configure("Custom.Treeview", background=COR_JANELA_PRINCIPALNEL, foreground=COR_TEXTO, rowheight=26, fieldbackground=COR_JANELA_PRINCIPALNEL, font=FONTE_NORMAL)
+    style.configure("Custom.Treeview", background=COR_JANELA_PRINCIPAL, foreground=COR_TEXTO, rowheight=26, fieldbackground=COR_JANELA_PRINCIPAL, font=FONTE_NORMAL)
     style.configure("Custom.Treeview.Heading", background=COR_BTN, foreground=COR_TITULO, font=("Courier New", 10, "bold"), relief="flat")
     style.map("Custom.Treeview", background=[("selected", COR_BORDA)], foreground=[("selected", COR_TITULO)])
 

@@ -34,7 +34,7 @@ def validar_descricao(texto):
 
 def validar_tipo_produto(tipo):
     """Valida que o tipo de produto é 1 (Bebida) ou 2 (Lanche)."""
-    if str(tipo) not in ("1", "2"):
+    if str(tipo).lower() not in ("bebida", "lanche"):
         return False, "Tipo de produto deve ser 1 (Bebida) ou 2 (Lanche)."
     return True, ""
 
